@@ -7,3 +7,4 @@ tensorboard
 seaborn
 streamlit
 ipykernel
+python==3.11
