@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 import pickle
 
 # Page config
@@ -12,7 +11,7 @@ st.set_page_config(page_title="Customer Churn Predictor", layout="centered")
 @st.cache_resource
 def load_assets():
     try:
-        model = load_model('churn_model.h5')
+        model = tf.keras.models.load_model("churn_model.h5")
         with open('scaler.pkl', 'rb') as f:
             scaler = pickle.load(f)
         with open('onehot_encoder_geography.pkl', 'rb') as f:
