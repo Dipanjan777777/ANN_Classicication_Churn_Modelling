@@ -11,16 +11,22 @@ st.set_page_config(page_title="Customer Churn Predictor", layout="centered")
 # Load model and preprocessing objects
 @st.cache_resource
 def load_assets():
-    model = load_model('churn_model.h5')
-    with open('scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
-    with open('onehot_encoder_geography.pkl', 'rb') as f:
-        onehot_encoder_geography = pickle.load(f)
-    with open('label_encoder_gender.pkl', 'rb') as f:
-        label_encoder_gender = pickle.load(f)
-    return model, scaler, onehot_encoder_geography, label_encoder_gender
+    try:
+        model = load_model('churn_model.h5')
+        with open('scaler.pkl', 'rb') as f:
+            scaler = pickle.load(f)
+        with open('onehot_encoder_geography.pkl', 'rb') as f:
+            onehot_encoder_geography = pickle.load(f)
+        with open('label_encoder_gender.pkl', 'rb') as f:
+            label_encoder_gender = pickle.load(f)
+        return model, scaler, onehot_encoder_geography, label_encoder_gender
+    except Exception as e:
+        st.error(f"❌ Failed to load model or preprocessing assets:\n\n{e}")
+        return None, None, None, None
 
 model, scaler, onehot_encoder_geography, label_encoder_gender = load_assets()
+if model is None:
+    st.stop()
 
 # Title and description
 st.title("🔍 Customer Churn Prediction App")
