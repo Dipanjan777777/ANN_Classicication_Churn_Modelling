@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 import pickle
 
 # Page config
@@ -11,7 +10,7 @@ st.set_page_config(page_title="Customer Churn Predictor", layout="centered")
 # Load model and preprocessing objects
 @st.cache_resource
 def load_assets():
-    model = load_model('churn_model.h5')
+    model = tf.keras.models.load_model('churn_model.h5')
     with open('scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
     with open('onehot_encoder_geography.pkl', 'rb') as f:
@@ -86,4 +85,5 @@ if submit:
             st.success(f"✅ The customer is **unlikely to churn** with a probability of {(1 - prob) * 100:.2f}%")
 
     except Exception as e:
+        st.error(f"❌ An error occurred during prediction:\n\n{e}")
         st.error(f"❌ An error occurred during prediction:\n\n{e}")
